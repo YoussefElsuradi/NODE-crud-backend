@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 
+const employeeRoutes = require("./routes/employees");
 
 // middleware
 app.use(cors());
