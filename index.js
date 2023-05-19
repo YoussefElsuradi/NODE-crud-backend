@@ -64,6 +64,35 @@ app.get("/employees", async (req, res) => {
     }
 });
 
+//creates a task 
+app.post("/tasks", async (req, res) => {
+    try {
+        const { assigned_to, description, priority_level, completion_status } = req.body;
+        const newTask = await Task.create({
+            assigned_to,
+            description,
+            priority_level,
+            completion_status
+        });
+
+        res.json(newTask);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ error: "Failed to create task" });
+    }
+});
+
+//gets employee by id // http://localhost:4000/employees/1
+app.get("/employees/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const oneEmployee = await Employee.findByPk(id);
+        res.json(oneEmployee);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
 // delete a employee
 app.delete('/employees/:id', async (req, res) => {
     try {
@@ -120,24 +149,6 @@ app.post('/employees', async (req, res) => {
     }
 });
 
-//creates a task 
-app.post("/tasks", async (req, res) => {
-    try {
-        const { assigned_to, description, priority_level, completion_status } = req.body;
-        const newTask = await Task.create({
-            assigned_to,
-            description,
-            priority_level,
-            completion_status
-        });
-
-        res.json(newTask);
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).json({ error: "Failed to create task" });
-    }
-});
-
 /**
 * @how
 * API will be http://localhost:4000/tasks
@@ -147,17 +158,6 @@ app.get("/tasks", async (req, res) => {
     try {
         const allTasks = await Task.findAll();
         res.json(allTasks);
-    } catch (err) {
-        console.error(err.message);
-    }
-});
-
-//gets employee by id // http://localhost:4000/employees/1
-app.get("/employees/:id", async (req, res) => {
-    try {
-        const { id } = req.params;
-        const oneEmployee = await Employee.findByPk(id);
-        res.json(oneEmployee);
     } catch (err) {
         console.error(err.message);
     }
