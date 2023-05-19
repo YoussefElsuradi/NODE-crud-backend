@@ -8,6 +8,8 @@ const cors = require("cors");
 app.use(cors());
 app.use(express.json());
 
+// this sepcifies the db information like the id, url, and password
+
 // specific routes
 const sequelize = new Sequelize('dfvlo44fqd2221', 'vmnssahmeabbak', '9ba166642a6071c500130b68397498fbf621a0a7df156a57f5923e78eeb1d79c', {
     host: 'ec2-34-193-110-25.compute-1.amazonaws.com',
@@ -29,6 +31,8 @@ sequelize.authenticate()
   .catch((err) => {
     console.error('Unable to connect to the database:', err);
   });
+
+// this is the All the method for employee
 
 // Define the "Employee" model
 const Employee = sequelize.define('Employee', {
@@ -129,6 +133,8 @@ app.delete('/employees/:id', async (req, res) => {
       res.status(500).json({ error: 'Server error' });
     }
   });
+
+// this is all the methods for task
 
 /**
  * Creating a new uses "post"
