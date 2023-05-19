@@ -46,6 +46,25 @@ const Employee = sequelize.define('Employee', {
     },
 });
 
+// create a employee
+app.post('/employees', async (req, res) => {
+    try {
+        const { employee_first_name, employee_last_name, department_name } = req.body;
+
+        // Create a new employee using the Employee model
+        const newEmployee = await Employee.create({
+            employee_first_name,
+            employee_last_name,
+            department_name,
+        });
+
+        res.json(newEmployee);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
 /**
  * search uses "get"
  */
@@ -129,25 +148,6 @@ Task.init({
     priority_level: DataTypes.INTEGER,
     completion_status: DataTypes.BOOLEAN
 }, { sequelize, modelName: 'Task' });
-
-// create a employee
-app.post('/employees', async (req, res) => {
-    try {
-        const { employee_first_name, employee_last_name, department_name } = req.body;
-
-        // Create a new employee using the Employee model
-        const newEmployee = await Employee.create({
-            employee_first_name,
-            employee_last_name,
-            department_name,
-        });
-
-        res.json(newEmployee);
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
-    }
-});
 
 /**
 * @how
