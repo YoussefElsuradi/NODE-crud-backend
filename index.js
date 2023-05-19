@@ -22,6 +22,7 @@ const sequelize = new Sequelize('dfvlo44fqd2221', 'vmnssahmeabbak', '9ba166642a6
     }
   });
 
+// this make sure the the connection
 sequelize.authenticate()
   .then(() => {
     console.log('Connection has been established successfully.');
@@ -233,6 +234,8 @@ app.delete('/tasks/:id', async (req, res) => {
       res.status(500).json({ error: 'Server error' });
     }
   });
+
+// pick a port that is not being used
 
 // listen to the server
 sequelize.sync().then(() => {
