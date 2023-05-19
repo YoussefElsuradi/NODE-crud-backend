@@ -47,6 +47,42 @@ const Employee = sequelize.define('Employee', {
 });
 
 /**
+ * search uses "get"
+ */
+
+/**
+ * @how
+ * API will be http://localhost:4000/employees
+ */
+//get all employees
+app.get("/employees", async (req, res) => {
+    try {
+        const allEmployees = await Employee.findAll();
+        res.json(allEmployees);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+// delete a employee
+app.delete('/employees/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const employee = await Employee.findByPk(id);
+  
+      if (!employee) {
+        return res.status(404).json({ error: 'Employee not found' });
+      }
+  
+      await employee.destroy();
+      res.json('Employee was deleted!');
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ error: 'Server error' });
+    }
+  });
+
+/**
  * Creating a new uses "post"
  */
 
@@ -103,24 +139,6 @@ app.post("/tasks", async (req, res) => {
 });
 
 /**
- * search uses "get"
- */
-
-/**
- * @how
- * API will be http://localhost:4000/employees
- */
-//get all employees
-app.get("/employees", async (req, res) => {
-    try {
-        const allEmployees = await Employee.findAll();
-        res.json(allEmployees);
-    } catch (err) {
-        console.error(err.message);
-    }
-});
-
-/**
 * @how
 * API will be http://localhost:4000/tasks
 */
@@ -165,34 +183,6 @@ app.get("/tasks/:id", async (req, res) => {
  * edit uses "put"
  */
 
-// edit employee by id // http://localhost:4000/employees/
-app.put("/employees/:id", async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { employee_first_name, employee_last_name, department_name } = req.body;
-
-        // Find the employee by ID
-        const employee = await Employee.findByPk(id);
-
-        if (!employee) {
-            return res.status(404).json({ error: "Employee not found" });
-        }
-
-        // Update the employee's properties
-        employee.employee_first_name = employee_first_name;
-        employee.employee_last_name = employee_last_name;
-        employee.department_name = department_name;
-
-        // Save the updated employee
-        await employee.save();
-
-        res.json("Employee was updated!");
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).json({ error: "Server error" });
-    }
-});
-
 /**
  * @how
  * API will be http://localhost:4000/tasks/:id
@@ -225,27 +215,6 @@ app.put('/tasks/:id', async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 });
-
-
-
-
-// delete a employee
-app.delete('/employees/:id', async (req, res) => {
-    try {
-      const { id } = req.params;
-      const employee = await Employee.findByPk(id);
-  
-      if (!employee) {
-        return res.status(404).json({ error: 'Employee not found' });
-      }
-  
-      await employee.destroy();
-      res.json('Employee was deleted!');
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).json({ error: 'Server error' });
-    }
-  });
 
 // delete a task
 app.delete('/tasks/:id', async (req, res) => {
